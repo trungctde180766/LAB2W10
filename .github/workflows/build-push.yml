@@ -61,7 +61,7 @@ jobs:
       # exit-code 1 → pipeline đỏ nếu có CVE HIGH hoặc CRITICAL
       # CVE vendor chưa fix → ghi exception ADR (xem runbooks/exception-adr.md)
       - name: Trivy vulnerability scan
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@0.36.0
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           format: table
