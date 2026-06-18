@@ -20,6 +20,6 @@ spec:
       # Private key giữ trong GitHub Secret: COSIGN_KEY + COSIGN_PASSWORD
       data: |
         -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEW9WLj4ouQceotBKXbJyxvssIbpmt
-        u+r7iSzpeTZOrhp67IyDha4yrXBg0H7On2swaVP8GAWba3X7vceNEc5R1g==
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1zRF+IH8JhgjYdsmdijYiA7xbTsa
+        YKetwQJZH2HfTtV5xX8I3GaZS+oBNAqvCUZq8znraltPqueAjv1xkeKFLQ==
         -----END PUBLIC KEY-----
