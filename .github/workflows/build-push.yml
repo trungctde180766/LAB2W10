@@ -108,13 +108,13 @@ jobs:
       # ── Update rollout manifest ───────────────────────────────────────────────
       - name: Update rollout.yaml with new version
         run: |
-          sed -i "s|image: ghcr.io/.*/lab2-api:.*|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.version }}|g" app-api/rollout.yaml
+          sed -i "s|image: ghcr.io/.*/lab2-api:.*|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.version }}|g" app-payments/rollout.yaml
 
       - name: Commit and push version update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app-api/rollout.yaml
+          git add app-payments/rollout.yaml
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
