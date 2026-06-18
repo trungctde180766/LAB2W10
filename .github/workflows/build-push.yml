@@ -84,10 +84,8 @@ jobs:
 
       - name: Cosign sign image with private key
         run: |
-          printf '%s' "${COSIGN_KEY}" > /tmp/cosign.key
-          cosign sign --key /tmp/cosign.key \
+          cosign sign --key env://COSIGN_KEY \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          rm -f /tmp/cosign.key
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
           COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
@@ -100,10 +98,8 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.version }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.version }}
           # Ký thêm tag version
-          printf '%s' "${COSIGN_KEY}" > /tmp/cosign.key
-          cosign sign --key /tmp/cosign.key \
+          cosign sign --key env://COSIGN_KEY \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.version }}
-          rm -f /tmp/cosign.key
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
           COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
