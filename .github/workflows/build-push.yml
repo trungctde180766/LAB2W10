@@ -1,5 +1,6 @@
 # LAB 2.2 - CI: Build → Trivy scan → Cosign sign → Push
 # Flow: Trivy fail nếu CVE HIGH/CRITICAL → Cosign ký sau khi pass → push lên registry
+# trigger: regenerate cosign key pair
 name: Build, Scan, Sign and Push
 
 on:
@@ -83,12 +84,13 @@ jobs:
 
       - name: Cosign sign image with private key
         run: |
-          echo "${{ secrets.COSIGN_KEY }}" > /tmp/cosign.key
+          printf '%s' "${COSIGN_KEY}" > /tmp/cosign.key
           cosign sign --key /tmp/cosign.key \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           rm -f /tmp/cosign.key
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
         # Signature tự động push vào registry cạnh image
 
       # ── Tag thêm với version + latest ────────────────────────────────────────
@@ -98,12 +100,13 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.version }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.version }}
           # Ký thêm tag version
-          echo "${{ secrets.COSIGN_KEY }}" > /tmp/cosign.key
+          printf '%s' "${COSIGN_KEY}" > /tmp/cosign.key
           cosign sign --key /tmp/cosign.key \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.semver.outputs.version }}
           rm -f /tmp/cosign.key
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
 
       # ── Update rollout manifest ───────────────────────────────────────────────
       - name: Update rollout.yaml with new version
